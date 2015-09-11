@@ -9,6 +9,10 @@ import pygame as pg
 from . import bodies
 from .globs import *
 from CameraReader import *
+
+SPEED_FACTOR = 5
+DAMAGE_FACTOR = 5
+
 class BlueWing(bodies.Player):
     def __init__(self,location,size,speed,angle):
         bodies.Player.__init__(self,location,size,speed,angle)
@@ -45,17 +49,20 @@ class Triple(bodies.Player):
         self.angle_offset = 180
 
     def fire_prime(self,objects):
-        Shot = Pulse(self,self.location[:],self.rect.size,(self.vel_x,self.vel_y),-self.angle)
-        Shot.set_basics(300,5,3.0,GFXA["tri_pulse"])
-        objects.append(Shot)
+        objects.append(Pulse(self,self.location[:],self.rect.size,(self.vel_x,self.vel_y),-self.angle))
+
+#    def fire_prime(self,objects):
+#        Shot = Pulse(self,self.location[:],self.rect.size,(self.vel_x,self.vel_y),-self.angle)
+#        Shot.set_basics(300,5,3.0,GFXA["tri_pulse"])
+#        objects.append(Shot)
 
 class Pulse(bodies.Body):
     def __init__(self,origin,location,size,speed,angle):
         bodies.Body.__init__(self,location,size,speed,angle)
         self.done = False
         self.start = location[:]
-        self.range = 100
-        self.damage = 1
+        self.range = 300
+        self.damage = 1 * DAMAGE_FACTOR
         self.origin = origin
         self.hit_origin = False #Can your own shots hit you?
         self.hit_self   = False #Can your shots hit each other?
@@ -65,6 +72,7 @@ class Pulse(bodies.Body):
         self.play_speed = speed
 
         self.set_speed()
+        self.set_speed_factor(SPEED_FACTOR)
         self.initial = GFXA["blue_pulse"]
         self.make_image()
 
@@ -79,8 +87,14 @@ class Pulse(bodies.Body):
         self.damage = damage
         self.rad_speed = speed
         self.set_speed()
+        self.set_speed_factor(SPEED_FACTOR)
         self.initial = image
         self.make_image()
+
+    def set_speed_factor(self, factor):
+        self.vel_x *= factor
+        self.vel_y *= factor
+        self.speed = math.hypot(self.vel_x,self.vel_y)
 
     def set_speed(self):
         ang = math.radians(self.calc_angle)
