@@ -41,6 +41,14 @@ def fix(l):
     return average(s[1:-1])
 
 
+def get_ship_box(ship_color_bounds):
+    ship = get_rect(ship_color_bounds)
+
+    return get_box_center(ship), get_box_angle(ship)
+
+
+def get_box_center(box):
+    return average([x[0] for x in box]),average([x[1] for x in box])
 
 
 def get_ship(ship_color_bounds, center_color_bounds, head_color_bounds):
@@ -94,6 +102,23 @@ def get_angle(point_A, point_B):
     rad = math.atan2(y_delta,x_delta)
 
     return rad*(180/math.pi)
+
+def get_box(color_bounds):
+    # Take each frame
+    _, frame = cap.read()
+
+    # Convert BGR to HSV
+    #hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+
+    hierarchy = get_place(frame, color_bounds[0], color_bounds[1])
+
+    #rects = [cv2.boundingRect(x) for x in hierarchy]
+    #rect = max(rects, key=lambda x: x[2]*x[3])
+
+    boxes = [cv2.minAreaRect(cnt) for cnt in hierarchy]
+
+    box = max(boxes,key=lambda x: get_distance(x[0],x[1]) * get_distance(x[1],x[2]))
+    return box
 
 def get_rect(color_bounds, space_bounds = None):
 
