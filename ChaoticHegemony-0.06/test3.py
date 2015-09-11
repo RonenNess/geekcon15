@@ -1,15 +1,37 @@
 import cv2
 import numpy as np
+from math import atan2, degrees, pi, hypot
 
 cap = cv2.VideoCapture(1)
 
 
-def printAngle(calculatedRect):
-    if calculatedRect.size.width < calculatedRect.size.height:
-        print "Angle along longer side: " + str(calculatedRect.angle+180)
-    else:
-        print "Angle along longer side: " + str(calculatedRect.angle+90)
+def get_box_angle(box):
+    '''
+    get angle from a given box points
+    '''
+    p1 = box[0]
+    p2 = box[1]
+    p3 = box[2]
+    p4 = box[3]
 
+    x1 = p1[0]
+    x2 = p2[0]
+    x3 = p3[0]
+    x4 = p4[0]
+    y1 = p1[1]
+    y2 = p2[1]
+    y3 = p3[1]
+    y4 = p4[1]
+
+    #if hypot(x2 - x1, y2 - y1) > hypot(x3 - x4, y3 - y4):
+
+
+    dx = x2 - x1
+    dy = y2 - y1
+    rads = atan2(-dy,dx)
+    rads %= 2*pi
+    degs = int(degrees(rads))
+    return degs
 
 
 while(1):
@@ -46,7 +68,7 @@ while(1):
             box = cv2.boxPoints(rect)
             box = np.int0(box)
             im = cv2.drawContours(res,[box],0,(0,0,255),2)
-            print dir(box)
+            print str(get_box_angle(box))
 
     """
     # draw all contours bounding boxes
