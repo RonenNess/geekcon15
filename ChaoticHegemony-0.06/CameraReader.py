@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import math
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 
 BODY_SHIP_ORANGE = ([8, 100, 100],[30, 255, 255])
 DOT_GREEN_ON_ORANGE = ([8, 100, 100],[30, 255, 255])
