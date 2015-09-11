@@ -84,7 +84,7 @@ class Pulse(bodies.Body):
         bodies.Body.__init__(self,location,size,speed,angle)
         self.done = False
         self.start = location[:]
-        self.range = 300
+        self.range = 400
         self.damage = 1 * DAMAGE_FACTOR
         self.origin = origin
         self.hit_origin = False #Can your own shots hit you?
