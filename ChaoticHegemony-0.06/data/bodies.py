@@ -335,7 +335,9 @@ class Player(Body):
     def primary(self,arg):
         """Check if primary can be used and if so update timers and energy accordingly."""
         if self.energy - self.prim_cost >= 0 and self.life > 0:
-            if pg.time.get_ticks() - self.prime_time >= 1000/self.prime_speed:
+
+            randomTime = randint(500,1000)
+            if pg.time.get_ticks() - self.prime_time >= randomTime/self.prime_speed:
                 self.fire_prime(arg)
                 self.prime_time = pg.time.get_ticks()
                 self.energy -= self.prim_cost
