@@ -10,7 +10,6 @@ from .globs import *
 from random import randint
 import time
 from CameraReader import *
-
 def average(l):
     return int(float(sum(l)) / len(l))
 
@@ -218,34 +217,35 @@ class Body(_Collission):
         self.location[0] += self.vel_x
         self.location[1] += self.vel_y
         """
+        self.old_loc = self.location[:]
+
         try:
-            if self.playerNum == 1:
+            color = self.color
+        except AttributeError:
+            color = BRIGHT_BLUE
 
-                self.old_loc = self.location[:]
+        position, angle = get_ship_box(color)
 
-                position, center, head = get_ship(BODY_SHIP_BLACK,DOT_RED_TAPE,DOT_GREEN_TAPE)
+        #position, center, head = get_ship(BODY_SHIP_BLACK,DOT_RED_TAPE,DOT_GREEN_TAPE)
 
-                self.pos_history, pos_result = add_and_get_avg(self.pos_history, position)
-                if pos_result:
-                    self.location[0], self.location[1] = pos_result
+        self.pos_history, pos_result = add_and_get_avg(self.pos_history, position)
+        if pos_result:
+            self.location[0], self.location[1] = pos_result
 
-                self.cent_history, cent_result = add_and_get_avg(self.cent_history, center)
-                self.head_history, head_result = add_and_get_avg(self.head_history, head)
+        #self.cent_history, cent_result = add_and_get_avg(self.cent_history, center)
+        #self.head_history, head_result = add_and_get_avg(self.head_history, head)
 
-                print "H", head_result, self.head_history
+        #print "H", head_result, self.head_history
 
-                if cent_result and head_result:
+        #if cent_result and head_result:
 #                    self.ang_history, self.angle = add_and_get_avg(self.ang_history, get_angle(pos_result, head_result))
 #                    if not(self.angle):
 #                        self.angle = 0 # HACK
-                    self.angle = get_angle(pos_result, head_result)
-                    self.calc_angle = -90 - self.angle
-                    print "A", self.angle
+        self.angle = angle
+        self.calc_angle = -90 - self.angle
 
-                self.make_image()
-        except AttributeError as e:
-            print e
-            return
+        self.make_image()
+
 
     def update(self,maprect,extra,collide):
         """update function called every frame"""

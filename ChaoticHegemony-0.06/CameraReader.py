@@ -13,6 +13,7 @@ DOT_GREEN_TAPE = ([0, 20, 0],[200, 255, 40])
 DOT_RED_TAPE = ([0, 0, 40],[100, 100, 255])
 
 BRIGHT_BLUE = ([40, 0, 0],[255, 200, 100])
+BRIGHT_PINK = ([0, 0, 150],[140, 140, 255])
 PENCIL = ([0, 0, 40],[60, 220, 255])
 
 def get_place(hsv, low_bound, high_bound):
@@ -42,7 +43,7 @@ def fix(l):
 
 
 def get_ship_box(ship_color_bounds):
-    ship = get_rect(ship_color_bounds)
+    ship = get_box(ship_color_bounds)
 
     return get_box_center(ship), get_box_angle(ship)
 
@@ -115,9 +116,10 @@ def get_box(color_bounds):
     #rects = [cv2.boundingRect(x) for x in hierarchy]
     #rect = max(rects, key=lambda x: x[2]*x[3])
 
-    boxes = [cv2.minAreaRect(cnt) for cnt in hierarchy]
+    boxes = [cv2.boxPoints(cv2.minAreaRect(cnt)) for cnt in hierarchy]
 
     box = max(boxes,key=lambda x: get_distance(x[0],x[1]) * get_distance(x[1],x[2]))
+
     return box
 
 def get_rect(color_bounds, space_bounds = None):
@@ -169,7 +171,7 @@ while(1):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
     #hierarchy = get_place(hsv, [80,50, 50],[100, 255, 255]) green
-    hierarchy = get_place(frame, BRIGHT_BLUE[0], BRIGHT_BLUE[1])
+    hierarchy = get_place(frame, BRIGHT_PINK[0], BRIGHT_PINK[1])
 
     # draw all contours bounding boxes
     for cnt in hierarchy:

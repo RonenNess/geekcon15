@@ -8,7 +8,7 @@ import pygame as pg
 
 from . import bodies
 from .globs import *
-
+from CameraReader import *
 class BlueWing(bodies.Player):
     def __init__(self,location,size,speed,angle):
         bodies.Player.__init__(self,location,size,speed,angle)
@@ -24,7 +24,7 @@ class BlueWing(bodies.Player):
         self.prim_cost   = 1
         self.second_cost = 0.0
         self.regen = 300
-        self.playerNum = 1
+        self.color = BRIGHT_BLUE
 
     def fire_prime(self,objects):
         objects.append(Pulse(self,self.location[:],self.rect.size,(self.vel_x,self.vel_y),-self.angle))
@@ -40,7 +40,7 @@ class Triple(bodies.Player):
 
         self.initial = GFX["tripple"]
         self.make_image()
-        self.playerNum = 2
+        self.color = BRIGHT_PINK
 
     def fire_prime(self,objects):
         Shot = Pulse(self,self.location[:],self.rect.size,(self.vel_x,self.vel_y),-self.angle)
@@ -66,7 +66,7 @@ class Pulse(bodies.Body):
         self.initial = GFXA["blue_pulse"]
         self.make_image()
 
-        self.playerNum = 3
+        self.color = BRIGHT_PINK
 
 ##        #mess around with helix bullets
 ##        self.left = True
