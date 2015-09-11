@@ -19,15 +19,15 @@ class BlueWing(bodies.Player):
         self.initial = GFX["wing_blue"]
         self.make_image()
 
-        self.prime_speed = 7.0
+        self.prime_speed = 1.0
 
         self.max_life   = self.life   = 8
         self.max_energy = self.energy = 10
         self.accel = 0.05
 
-        self.prim_cost   = 1
+        self.prim_cost   = 0
         self.second_cost = 0.0
-        self.regen = 300
+        self.regen = 700
         self.color = STICK_GREEN
         self.angle_offset = 0
         self.screen_half = 0
@@ -41,15 +41,15 @@ class Triple(bodies.Player):
         self.initial = GFX["tripple"]
         self.make_image()
 
-        self.prime_speed = 7.0
+        self.prime_speed = 1.0
 
         self.max_life   = self.life   = 8
         self.max_energy = self.energy = 10
         self.accel = 0.05
 
-        self.prim_cost   = 1
+        self.prim_cost   = 0
         self.second_cost = 0.0
-        self.regen = 300
+        self.regen = 700
         self.color = STICK_GREEN
         self.angle_offset = 180
         self.screen_half = 1

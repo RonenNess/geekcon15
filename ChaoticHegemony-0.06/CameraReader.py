@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import math
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 IS_WALL = True
 
@@ -151,7 +151,7 @@ def get_box(color_bounds, screen):
 
     return box
 
- HALF_SCREEN_THRESHOLD = 80
+HALF_SCREEN_THRESHOLD = 80
 def is_in_half_screen(box, half_screen):
     xs = [p[0] for p in box]
     if half_screen == 1:

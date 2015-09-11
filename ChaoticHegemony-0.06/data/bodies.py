@@ -10,6 +10,9 @@ from .globs import *
 from random import randint
 import time
 from CameraReader import *
+
+FIRE_DELAY = 20
+
 def average(l):
     return int(float(sum(l)) / len(l))
 
@@ -307,6 +310,7 @@ class Player(Body):
         self.ang_history = []
         self.angle_offset = 0
         self.screen_half = -1
+        self.time_since_fire = 0
 
 
 
@@ -321,7 +325,7 @@ class Player(Body):
             self.thrust  = True if keys[self.keys["thrust"]]  else False
             self.reverse = True if keys[self.keys["reverse"]] else False
             #Using primary and secondary abilities
-            self.go_prime  = True if keys[self.keys["prime"]]  else False
+            self.go_prime  = True
             self.go_second = True if keys[self.keys["second"]]  else False
 
     def update(self,maprect,extra,collide):
@@ -330,7 +334,7 @@ class Player(Body):
 
     def primary(self,arg):
         """Check if primary can be used and if so update timers and energy accordingly."""
-        if self.energy - self.prim_cost >= 0:
+        if self.energy - self.prim_cost >= 0 and self.life > 0:
             if pg.time.get_ticks() - self.prime_time >= 1000/self.prime_speed:
                 self.fire_prime(arg)
                 self.prime_time = pg.time.get_ticks()
@@ -352,7 +356,7 @@ class Player(Body):
 
     def regen_energy(self):
         """Regenerates ship's energy at prescribed speed."""
-        if self.energy < self.max_energy and not (self.go_prime or self.go_second):
+        if self.energy < self.max_energy:
             if pg.time.get_ticks() - self.regen_timer >= self.regen:
                 self.energy += 1
                 self.regen_timer = pg.time.get_ticks()
@@ -368,6 +372,13 @@ class Player(Body):
         self.location[1] += self.vel_y
         """
         self.old_loc = self.location[:]
+
+#        self.time_since_fire += 1
+#
+#        if self.time_since_fire > FIRE_DELAY:
+#            self.fire_prime(objects)
+#            self.time_since_fire = 0
+
 
         try:
             color = self.color
