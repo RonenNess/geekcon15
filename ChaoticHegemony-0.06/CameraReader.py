@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import math
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 
 BODY_SHIP_ORANGE = ([8, 100, 100],[30, 255, 255])
 DOT_GREEN_ON_ORANGE = ([8, 100, 100],[30, 255, 255])
@@ -182,7 +182,7 @@ while(1):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
     #hierarchy = get_place(hsv, [80,50, 50],[100, 255, 255]) green
-    hierarchy = get_place(frame, BRIGHT_PINK[0], BRIGHT_PINK[1])
+    hierarchy = get_place(hsv, BRIGHT_PINK[0], BRIGHT_PINK[1])
 
     # draw all contours bounding boxes
     for cnt in hierarchy:
