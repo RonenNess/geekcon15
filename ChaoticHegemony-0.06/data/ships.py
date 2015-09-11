@@ -45,7 +45,7 @@ class Triple(bodies.Player):
 
         self.initial = GFX["tripple"]
         self.make_image()
-        self.color = BRIGHT_PINK
+        self.color = STICK_BLACK
         self.angle_offset = 180
 
     def fire_prime(self,objects):

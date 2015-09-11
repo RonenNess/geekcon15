@@ -19,6 +19,8 @@ BRIGHT_PINK = ([0, 0, 150],[140, 140, 255])
 PENCIL = ([0, 0, 40],[60, 220, 255])
 
 STICK_GREEN = [(74,50,50),(115,255,255)]
+STICK_BLACK = [(125, 50, 20), (175,255,255)]
+STICK_BLUE = [(95, 50, 50), (110, 255, 255)]
 
 def get_place(hsv, low_bound, high_bound):
 
