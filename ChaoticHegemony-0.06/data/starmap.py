@@ -15,7 +15,7 @@ class StarMap:
         self.sector = None
         self.P1 = Players[0]
         self.P2 = Players[1]
-        self.zoom = 4.0
+        self.zoom = 2.0
 
         self.center = (0,0)
         self.max_x = 0
@@ -54,7 +54,7 @@ class StarMap:
             if centery < PLAYSIZE[1]/4: centery = PLAYSIZE[1]/4
             elif centery > PLAYSIZE[1]-PLAYSIZE[1]/4: centery = PLAYSIZE[1]-PLAYSIZE[1]/4
         self.center = centerx,centery
-        self.center = 100, 100 # HACK!
+        self.center = 200, 200 # HACK!
 
     def get_zoom(self):
         """Finds the required zoom based on how far apart players are."""
@@ -66,7 +66,7 @@ class StarMap:
             self.zoom = 1.0
         if 5 in (self.P1.dead_frame,self.P2.dead_frame) and not (self.P1.dead,self.P2.dead) == (True,True):
             self.zoom = 1.0
-        self.zoom = 4.0 # HACK!
+        self.zoom = 2.0 # HACK!
         self.get_center()
 
     def get_extra(self):

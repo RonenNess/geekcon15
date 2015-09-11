@@ -24,7 +24,8 @@ class BlueWing(bodies.Player):
         self.prim_cost   = 1
         self.second_cost = 0.0
         self.regen = 300
-        self.color = BRIGHT_BLUE
+        self.color = [(74,50,50),(115,255,255)]
+        self.angle_offset = 0
 
     def fire_prime(self,objects):
         objects.append(Pulse(self,self.location[:],self.rect.size,(self.vel_x,self.vel_y),-self.angle))
@@ -41,6 +42,7 @@ class Triple(bodies.Player):
         self.initial = GFX["tripple"]
         self.make_image()
         self.color = BRIGHT_PINK
+        self.angle_offset = 180
 
     def fire_prime(self,objects):
         Shot = Pulse(self,self.location[:],self.rect.size,(self.vel_x,self.vel_y),-self.angle)

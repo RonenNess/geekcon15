@@ -31,6 +31,12 @@ def get_place(hsv, low_bound, high_bound):
 
     return hierarchy
 
+def mirror_point(p):
+    return (640-p[0],480-p[1])
+
+def mirror_box(b):
+    return [mirror_point(x) for x in b]
+
 def average(l):
     return int(float(sum(l)) / len(l))
 
@@ -41,9 +47,14 @@ def fix(l):
     s = sorted(l)
     return average(s[1:-1])
 
+def factor_point(p, factor):
+    return [x*factor for x in p]
+
+def factor_box(b, factor):
+    return[factor_point(x,factor) for x in b]
 
 def get_ship_box(ship_color_bounds):
-    ship = get_box(ship_color_bounds)
+    ship = factor_box(mirror_box(get_box(ship_color_bounds)),0.66)
 
     return get_box_center(ship), get_box_angle(ship)
 

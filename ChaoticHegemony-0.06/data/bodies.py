@@ -225,6 +225,10 @@ class Body(_Collission):
             color = BRIGHT_BLUE
 
         position, angle = get_ship_box(color)
+        try:
+            angle = angle % 180 + self.angle_offset
+        except AttributeError:
+            angle = angle % 180
 
         #position, center, head = get_ship(BODY_SHIP_BLACK,DOT_RED_TAPE,DOT_GREEN_TAPE)
 
@@ -324,6 +328,8 @@ class Player(Body):
         self.cent_history = []
         self.head_history = []
         self.ang_history = []
+
+
 
 
     def events(self,keys):
