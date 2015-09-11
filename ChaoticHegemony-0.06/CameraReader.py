@@ -4,6 +4,8 @@ import math
 
 cap = cv2.VideoCapture(0)
 
+IS_WALL = True
+
 BODY_SHIP_ORANGE = ([8, 100, 100],[30, 255, 255])
 DOT_GREEN_ON_ORANGE = ([8, 100, 100],[30, 255, 255])
 DOT_BLACK_ON_ORANGE = ([50, 0, 0],[230, 150, 150])
@@ -15,6 +17,10 @@ DOT_RED_TAPE = ([0, 0, 40],[100, 100, 255])
 BRIGHT_BLUE = ([40, 0, 0],[255, 200, 100])
 BRIGHT_PINK = ([0, 0, 150],[140, 140, 255])
 PENCIL = ([0, 0, 40],[60, 220, 255])
+
+STICK_GREEN = [(74,50,50),(115,255,255)]
+STICK_BLACK = [(125, 50, 20), (175,255,255)]
+STICK_BLUE = [(95, 50, 50), (110, 255, 255)]
 
 def get_place(hsv, low_bound, high_bound):
 
@@ -32,7 +38,10 @@ def get_place(hsv, low_bound, high_bound):
     return hierarchy
 
 def mirror_point(p):
-    return (640-p[0],480-p[1])
+    if IS_WALL:
+        return (640-p[0], p[1])
+    else:
+        return (640-p[0], 480-p[1])
 
 def mirror_box(b):
     return [mirror_point(x) for x in b]
@@ -54,7 +63,10 @@ def factor_box(b, factor):
     return[factor_point(x,factor) for x in b]
 
 def get_ship_box(ship_color_bounds):
-    ship = factor_box(mirror_box(get_box(ship_color_bounds)),0.66)
+    box = get_box(ship_color_bounds)
+    if box is None:
+        return None,None
+    ship = factor_box(mirror_box(box),0.66)
 
     return get_box_center(ship), get_box_angle(ship)
 
@@ -120,16 +132,20 @@ def get_box(color_bounds):
     _, frame = cap.read()
 
     # Convert BGR to HSV
-    #hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
-    hierarchy = get_place(frame, color_bounds[0], color_bounds[1])
+    hierarchy = get_place(hsv, color_bounds[0], color_bounds[1])
 
     #rects = [cv2.boundingRect(x) for x in hierarchy]
     #rect = max(rects, key=lambda x: x[2]*x[3])
 
     boxes = [cv2.boxPoints(cv2.minAreaRect(cnt)) for cnt in hierarchy]
 
-    box = max(boxes,key=lambda x: get_distance(x[0],x[1]) * get_distance(x[1],x[2]))
+    try:
+        box = max(boxes,key=lambda x: get_distance(x[0],x[1]) * get_distance(x[1],x[2]))
+    except ValueError as e:
+        print e
+        return None
 
     return box
 
@@ -197,7 +213,11 @@ while(1):
 
 
     rects = [cv2.boundingRect(x) for x in hierarchy]
-    best = max(range(len(rects)), key=lambda x: rects[x][2]*rects[x][3])
+    try:
+        best = max(range(len(rects)), key=lambda x: rects[x][2]*rects[x][3])
+    except ValueError as e:
+        print "ValueError: ", e
+        continue
 
 
 
