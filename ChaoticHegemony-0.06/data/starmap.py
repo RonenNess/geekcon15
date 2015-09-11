@@ -15,7 +15,7 @@ class StarMap:
         self.sector = None
         self.P1 = Players[0]
         self.P2 = Players[1]
-        self.zoom = 2.0
+        self.zoom = 2.6
 
         self.center = (0,0)
         self.max_x = 0
@@ -80,14 +80,7 @@ class StarMap:
 
     def get_bg_sector(self):
         """Finds the section of our background image to use."""
-        if self.zoom == 4.0:
-            self.rect = pg.Rect((0,0),PLAYSIZE)
-        elif self.zoom == 2.0:
-            self.rect = pg.Rect(self.center[0]-PLAYSIZE[0]/4,self.center[1]-PLAYSIZE[1]/4,
-                                PLAYSIZE[0]/2,PLAYSIZE[1]/2)
-        else:
-            self.rect = pg.Rect(self.center[0]-PLAYSIZE[0]/8,self.center[1]-PLAYSIZE[1]/8,
-                                PLAYSIZE[0]/4,PLAYSIZE[1]/4)
+        self.rect = pg.Rect((0,0),PLAYSIZE)
         self.sector = self.bg.subsurface(self.rect)
 
     def update(self):

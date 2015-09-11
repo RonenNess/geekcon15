@@ -9,8 +9,8 @@ os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 FPS = 64.0              #Global frames per second (desired)
 SCREENSIZE = (1000,600) #Global screen size
-PLAYSIZE   = (800,600)  #Global size of play area
-OFFSET     = (100,0)    #Global location of play area within screen
+PLAYSIZE   = (1000,600)  #Global size of play area
+OFFSET     = (0,0)    #Global location of play area within screen
 SURFACE = pg.display.set_mode(SCREENSIZE, pg.FULLSCREEN)
 pg.init()
 

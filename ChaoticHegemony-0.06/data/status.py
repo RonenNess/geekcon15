@@ -17,7 +17,7 @@ COLORS = (GREEN,YELLOW,ORANGE,RED,BLUE)
 class Statbar:
     def __init__(self,Player):
         self.myplay = Player
-        self.image = pg.Surface((100,600)).convert()
+        self.image = pg.Surface((100,121)).convert()
         self.l_color = GREEN
         self.e_color = GREEN
         l_height = 4+self.myplay.max_life*4
