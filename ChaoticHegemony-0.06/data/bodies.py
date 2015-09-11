@@ -13,6 +13,14 @@ from CameraReader import *
 def average(l):
     return int(float(sum(l)) / len(l))
 
+def fix_angle(angle, offset):
+    if IS_WALL:
+        angle += 90
+    try:
+        return angle % 180 + offset
+    except AttributeError:
+        return angle % 180
+
 def fix_pos(l):
     return (fix([x[0] for x in l]), fix([x[1] for x in l]))
 
@@ -297,6 +305,7 @@ class Player(Body):
         self.cent_history = []
         self.head_history = []
         self.ang_history = []
+        self.angle_offset = 0
 
 
 
@@ -365,14 +374,12 @@ class Player(Body):
             color = BRIGHT_BLUE
 
         position, angle = get_ship_box(color)
-        try:
-            angle = angle % 180 + self.angle_offset
-        except AttributeError:
-            angle = angle % 180
+        if (position == None) and (angle == None):
+            return
+        angle = fix_angle(angle, self.angle_offset)
 
         #position, center, head = get_ship(BODY_SHIP_BLACK,DOT_RED_TAPE,DOT_GREEN_TAPE)
         try:
-
             self.pos_history, pos_result = add_and_get_avg(self.pos_history, position)
             if pos_result:
                 self.location[0], self.location[1] = pos_result

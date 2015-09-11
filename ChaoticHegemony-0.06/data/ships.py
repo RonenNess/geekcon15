@@ -24,7 +24,7 @@ class BlueWing(bodies.Player):
         self.prim_cost   = 1
         self.second_cost = 0.0
         self.regen = 300
-        self.color = [(74,50,50),(115,255,255)]
+        self.color = STICK_GREEN
         self.angle_offset = 0
 
     def fire_prime(self,objects):
