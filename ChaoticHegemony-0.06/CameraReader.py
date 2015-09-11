@@ -16,6 +16,8 @@ BRIGHT_BLUE = ([40, 0, 0],[255, 200, 100])
 BRIGHT_PINK = ([0, 0, 150],[140, 140, 255])
 PENCIL = ([0, 0, 40],[60, 220, 255])
 
+STICK_GREEN = [(74,50,50),(115,255,255)]
+
 def get_place(hsv, low_bound, high_bound):
 
     # define range of color in HSV
@@ -182,7 +184,7 @@ while(1):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
     #hierarchy = get_place(hsv, [80,50, 50],[100, 255, 255]) green
-    hierarchy = get_place(frame, BRIGHT_PINK[0], BRIGHT_PINK[1])
+    hierarchy = get_place(hsv, STICK_GREEN[0], STICK_GREEN[1])
 
     # draw all contours bounding boxes
     for cnt in hierarchy:
@@ -197,7 +199,10 @@ while(1):
 
 
     rects = [cv2.boundingRect(x) for x in hierarchy]
-    best = max(range(len(rects)), key=lambda x: rects[x][2]*rects[x][3])
+    try:
+        best = max(range(len(rects)), key=lambda x: rects[x][2]*rects[x][3])
+    except ValueError:
+        continue
 
 
 

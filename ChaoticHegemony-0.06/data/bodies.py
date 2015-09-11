@@ -209,46 +209,15 @@ class Body(_Collission):
             self.location = [PLAYSIZE[0]-self.location[0],0]
             self.wrapped = True
 
+
     def move_it(self):
         """Updates location based on current velocity.  This location is to
         scale with the exact location at the furthest out zoom"""
-
-        """
+        self.old_loc = self.location[:]
         self.location[0] += self.vel_x
         self.location[1] += self.vel_y
-        """
-        self.old_loc = self.location[:]
 
-        try:
-            color = self.color
-        except AttributeError:
-            color = BRIGHT_BLUE
 
-        position, angle = get_ship_box(color)
-        try:
-            angle = angle % 180 + self.angle_offset
-        except AttributeError:
-            angle = angle % 180
-
-        #position, center, head = get_ship(BODY_SHIP_BLACK,DOT_RED_TAPE,DOT_GREEN_TAPE)
-
-        self.pos_history, pos_result = add_and_get_avg(self.pos_history, position)
-        if pos_result:
-            self.location[0], self.location[1] = pos_result
-
-        #self.cent_history, cent_result = add_and_get_avg(self.cent_history, center)
-        #self.head_history, head_result = add_and_get_avg(self.head_history, head)
-
-        #print "H", head_result, self.head_history
-
-        #if cent_result and head_result:
-#                    self.ang_history, self.angle = add_and_get_avg(self.ang_history, get_angle(pos_result, head_result))
-#                    if not(self.angle):
-#                        self.angle = 0 # HACK
-        self.angle = angle
-        self.calc_angle = -90 - self.angle
-
-        self.make_image()
 
 
     def update(self,maprect,extra,collide):
@@ -377,6 +346,52 @@ class Player(Body):
             if pg.time.get_ticks() - self.regen_timer >= self.regen:
                 self.energy += 1
                 self.regen_timer = pg.time.get_ticks()
+
+
+
+    def move_it(self):
+        """Updates location based on current velocity.  This location is to
+        scale with the exact location at the furthest out zoom"""
+
+        """
+        self.location[0] += self.vel_x
+        self.location[1] += self.vel_y
+        """
+        self.old_loc = self.location[:]
+
+        try:
+            color = self.color
+        except AttributeError:
+            color = BRIGHT_BLUE
+
+        position, angle = get_ship_box(color)
+        try:
+            angle = angle % 180 + self.angle_offset
+        except AttributeError:
+            angle = angle % 180
+
+        #position, center, head = get_ship(BODY_SHIP_BLACK,DOT_RED_TAPE,DOT_GREEN_TAPE)
+        try:
+
+            self.pos_history, pos_result = add_and_get_avg(self.pos_history, position)
+            if pos_result:
+                self.location[0], self.location[1] = pos_result
+        except AttributeError:
+            return
+
+        #self.cent_history, cent_result = add_and_get_avg(self.cent_history, center)
+        #self.head_history, head_result = add_and_get_avg(self.head_history, head)
+
+        #print "H", head_result, self.head_history
+
+        #if cent_result and head_result:
+#                    self.ang_history, self.angle = add_and_get_avg(self.ang_history, get_angle(pos_result, head_result))
+#                    if not(self.angle):
+#                        self.angle = 0 # HACK
+        self.angle = angle
+        self.calc_angle = -90 - self.angle
+
+        self.make_image()
 
     def dying(self):
         """Animates the player exploding on death.
