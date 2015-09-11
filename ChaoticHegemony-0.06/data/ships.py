@@ -30,6 +30,7 @@ class BlueWing(bodies.Player):
         self.regen = 300
         self.color = STICK_GREEN
         self.angle_offset = 0
+        self.screen_half = 0
 
     def fire_prime(self,objects):
         objects.append(Pulse(self,self.location[:],self.rect.size,(self.vel_x,self.vel_y),-self.angle))
@@ -37,20 +38,42 @@ class BlueWing(bodies.Player):
 class Triple(bodies.Player):
     def __init__(self,location,size,speed,angle):
         bodies.Player.__init__(self,location,size,speed,angle)
-        self.prime_speed = 3.0
+        self.initial = GFX["tripple"]
+        self.make_image()
 
-        self.prim_cost   = 5
+        self.prime_speed = 7.0
+
+        self.max_life   = self.life   = 8
+        self.max_energy = self.energy = 10
+        self.accel = 0.05
+
+        self.prim_cost   = 1
+        self.second_cost = 0.0
+        self.regen = 300
+        self.color = STICK_GREEN
+        self.angle_offset = 180
+        self.screen_half = 1
+
+    def fire_prime(self,objects):
+        objects.append(Pulse(self,self.location[:],self.rect.size,(self.vel_x,self.vel_y),-self.angle))
+"""
+    def __init__(self,location,size,speed,angle):
+        bodies.Player.__init__(self,location,size,speed,angle)
+        self.prime_speed = 7.0
+
+        self.prim_cost   = 1
         self.second_cost = 0.0
         self.regen = 500
 
         self.initial = GFX["tripple"]
         self.make_image()
-        self.color = STICK_BLACK
+        self.color = STICK_BLUE
         self.angle_offset = 180
+        self.screen_half = 1
 
     def fire_prime(self,objects):
         objects.append(Pulse(self,self.location[:],self.rect.size,(self.vel_x,self.vel_y),-self.angle))
-
+"""
 #    def fire_prime(self,objects):
 #        Shot = Pulse(self,self.location[:],self.rect.size,(self.vel_x,self.vel_y),-self.angle)
 #        Shot.set_basics(300,5,3.0,GFXA["tri_pulse"])

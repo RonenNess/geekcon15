@@ -20,7 +20,7 @@ PENCIL = ([0, 0, 40],[60, 220, 255])
 
 STICK_GREEN = [(74,50,50),(115,255,255)]
 STICK_BLACK = [(125, 50, 20), (175,255,255)]
-STICK_BLUE = [(95, 50, 50), (110, 255, 255)]
+STICK_BLUE = [(75, 0, 0), (110, 255, 255)]
 
 def get_place(hsv, low_bound, high_bound):
 
@@ -62,8 +62,8 @@ def factor_point(p, factor):
 def factor_box(b, factor):
     return[factor_point(x,factor) for x in b]
 
-def get_ship_box(ship_color_bounds):
-    box = get_box(ship_color_bounds)
+def get_ship_box(ship_color_bounds,screen):
+    box = get_box(ship_color_bounds,screen)
     if box is None:
         return None,None
     ship = factor_box(mirror_box(box),0.66)
@@ -127,7 +127,7 @@ def get_angle(point_A, point_B):
 
     return rad*(180/math.pi)
 
-def get_box(color_bounds):
+def get_box(color_bounds, screen):
     # Take each frame
     _, frame = cap.read()
 
@@ -141,6 +141,8 @@ def get_box(color_bounds):
 
     boxes = [cv2.boxPoints(cv2.minAreaRect(cnt)) for cnt in hierarchy]
 
+    boxes = filter(lambda b:is_in_half_screen(b,screen),boxes)
+
     try:
         box = max(boxes,key=lambda x: get_distance(x[0],x[1]) * get_distance(x[1],x[2]))
     except ValueError as e:
@@ -148,6 +150,14 @@ def get_box(color_bounds):
         return None
 
     return box
+
+ HALF_SCREEN_THRESHOLD = 80
+def is_in_half_screen(box, half_screen):
+    xs = [p[0] for p in box]
+    if half_screen == 1:
+        return all([(x+HALF_SCREEN_THRESHOLD)>320 for x in xs])
+    if half_screen == 0:
+        return all([(x-HALF_SCREEN_THRESHOLD)<320 for x in xs])
 
 def get_rect(color_bounds, space_bounds = None):
 
@@ -198,7 +208,7 @@ while(1):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
     #hierarchy = get_place(hsv, [80,50, 50],[100, 255, 255]) green
-    hierarchy = get_place(hsv, STICK_GREEN[0], STICK_GREEN[1])
+    hierarchy = get_place(hsv, STICK_BLUE[0], STICK_BLUE[1])
 
     # draw all contours bounding boxes
     for cnt in hierarchy:

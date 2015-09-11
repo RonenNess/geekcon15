@@ -306,6 +306,7 @@ class Player(Body):
         self.head_history = []
         self.ang_history = []
         self.angle_offset = 0
+        self.screen_half = -1
 
 
 
@@ -373,7 +374,7 @@ class Player(Body):
         except AttributeError:
             color = BRIGHT_BLUE
 
-        position, angle = get_ship_box(color)
+        position, angle = get_ship_box(color,self.screen_half)
         if (position == None) and (angle == None):
             return
         angle = fix_angle(angle, self.angle_offset)
