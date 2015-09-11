@@ -46,29 +46,8 @@ while(1):
     lower_col = np.array([169, 100, 100])
     upper_col = np.array([179, 255, 255])
 
-    # green stick
     lower_col = np.array([74, 50, 50])
     upper_col = np.array([115, 255, 255])
-
-    # pink marker
-    lower_col = np.array([142, 20, 50])
-    upper_col = np.array([160, 120, 255])
-
-    # blue marker
-    lower_col = np.array([72, 20, 50])
-    upper_col = np.array([105, 120, 255])
-
-    # orange stick
-    lower_col = np.array([10, 0, 200])
-    upper_col = np.array([24, 255, 255])
-
-    # blue stik
-    lower_col = np.array([95, 50, 50])
-    upper_col = np.array([110, 255, 255])
-
-    # black robot
-    #lower_col = np.array([125, 50, 50])
-    #upper_col = np.array([165, 255, 255])
 
     # Threshold the HSV image to get only the desired colors
     mask = cv2.inRange(hsv, lower_col, upper_col)
