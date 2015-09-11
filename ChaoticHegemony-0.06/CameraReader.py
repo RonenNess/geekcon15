@@ -2,17 +2,18 @@ import cv2
 import numpy as np
 import math
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 BODY_SHIP_ORANGE = ([8, 100, 100],[30, 255, 255])
 DOT_GREEN_ON_ORANGE = ([8, 100, 100],[30, 255, 255])
 DOT_BLACK_ON_ORANGE = ([50, 0, 0],[230, 150, 150])
 
-BODY_SHIP_BLACK = ([0, 0, 0],[100, 100, 100])
+BODY_SHIP_BLACK = ([0, 0, 0],[50, 50, 50])
 DOT_GREEN_TAPE = ([0, 20, 0],[200, 255, 40])
 DOT_RED_TAPE = ([0, 0, 40],[100, 100, 255])
 
-BRIGHT_BLUE = ([40, 0, 0],[255, 150, 100])
+BRIGHT_BLUE = ([40, 0, 0],[255, 200, 100])
+PENCIL = ([0, 0, 40],[60, 220, 255])
 
 def get_place(hsv, low_bound, high_bound):
 
@@ -73,8 +74,9 @@ def get_ship(ship_color_bounds, center_color_bounds, head_color_bounds):
 
     """
     ship = get_rect(ship_color_bounds)
-    center = get_rect(center_color_bounds,ship)
-    head = get_rect(head_color_bounds,ship)
+    center = get_rect(center_color_bounds,None) # was ship in none
+    head = get_rect(head_color_bounds,None) # was ship in none
+    print get_rect_center(ship), get_rect_center(center), get_rect_center(head)
     return get_rect_center(ship), get_rect_center(center), get_rect_center(head)
 #    return avg_ship,get_angle(avg_center, avg_head)
 
@@ -118,6 +120,21 @@ def is_contain_rectangle(big_rect, small_rect, threshold = 18):
            ((big_rect[2] + big_rect[0] + threshold) > (small_rect[2] + small_rect[0])) and\
            ((big_rect[3] + big_rect[1] + threshold ) > (small_rect[3] + small_rect[1]))
 
+
+def get_distance(point1, point2):
+    return ((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)**0.5
+
+def get_box_angle(box):
+    distance1 = get_distance(box[0],box[1]) + get_distance(box[2],box[3])
+    distance2 = get_distance(box[0],box[3]) + get_distance(box[1],box[2])
+
+    if (distance1 < distance2):
+        return get_angle(calculate_average_point(box[0],box[1]),calculate_average_point(box[2],box[3]))
+    else:
+        return get_angle(calculate_average_point(box[0],box[3]),calculate_average_point(box[1],box[2]))
+
+def calculate_average_point(point1, point2):
+    return average([point1[0],point2[0]]),average([point1[1],point2[1]])
 while(1):
 
     # Take each frame
@@ -133,7 +150,17 @@ while(1):
     for cnt in hierarchy:
         x,y,w,h = cv2.boundingRect(cnt)
         if w > 10 and h > 10:
-            cv2.rectangle(frame, (x, y), (x+w, y+h), (0,0,255), 2)
+            #cv2.rectangle(frame, (x, y), (x+w, y+h), (0,0,255), 2)
+            rect = cv2.minAreaRect(cnt)
+            box = cv2.boxPoints(rect)
+            box = np.int0(box)
+            im = cv2.drawContours(frame,[box],0,(0,0,255),2)
+
+
+
+    rects = [cv2.boundingRect(x) for x in hierarchy]
+    best = max(range(len(rects)), key=lambda x: rects[x][2]*rects[x][3])
+
 
 
 
@@ -143,7 +170,10 @@ while(1):
     if k == 27:
         break
     if k == 80:
-        print get_ship(BODY_SHIP_BLACK,DOT_RED_TAPE,DOT_GREEN_TAPE)
+        #print get_ship(BODY_SHIP_BLACK,DOT_RED_TAPE,DOT_GREEN_TAPE)
+        print box
+        print get_box_angle(box)
+
 
 
 cv2.destroyAllWindows()
