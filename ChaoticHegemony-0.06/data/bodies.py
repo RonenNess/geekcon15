@@ -392,6 +392,11 @@ class Player(Body):
             return
         angle = fix_angle(angle, self.angle_offset)
 
+        # fixed position to resolution
+        position = list(position)
+        position[0] = (position[0] / 640.0) * 770 #SCREENSIZE[0]
+        position[1] = (position[1] / 480.0) * SCREENSIZE[1]
+
         #position, center, head = get_ship(BODY_SHIP_BLACK,DOT_RED_TAPE,DOT_GREEN_TAPE)
         try:
             self.pos_history, pos_result = add_and_get_avg(self.pos_history, position)
