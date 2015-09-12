@@ -18,7 +18,7 @@ BRIGHT_BLUE = ([40, 0, 0],[255, 200, 100])
 BRIGHT_PINK = ([0, 0, 150],[140, 140, 255])
 PENCIL = ([0, 0, 40],[60, 220, 255])
 
-STICK_GREEN = [(74,50,50),(115,255,255)]
+STICK_GREEN = [(68,20,0),(120,255,255)]
 STICK_BLACK = [(125, 50, 20), (175,255,255)]
 STICK_BLUE = [(75, 0, 0), (110, 255, 255)]
 
@@ -213,7 +213,7 @@ while(1):
     # draw all contours bounding boxes
     for cnt in hierarchy:
         x,y,w,h = cv2.boundingRect(cnt)
-        if (w > 50 or h > 50) and (w > 10 and h > 10):
+        if (w > 30 or h > 30) and (w > 5 and h > 5):
             #cv2.rectangle(frame, (x, y), (x+w, y+h), (0,0,255), 2)
             rect = cv2.minAreaRect(cnt)
             box = cv2.boxPoints(rect)
