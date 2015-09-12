@@ -21,7 +21,7 @@ class BlueWing(bodies.Player):
 
         self.prime_speed = 1.0
 
-        self.max_life   = self.life   = 12
+        self.max_life   = self.life   = 18
         self.max_energy = self.energy = 10
         self.accel = 0.05
 
@@ -43,7 +43,7 @@ class Triple(bodies.Player):
 
         self.prime_speed = 1.0
 
-        self.max_life   = self.life   = 12
+        self.max_life   = self.life   = 18
         self.max_energy = self.energy = 10
         self.accel = 0.05
 
@@ -84,7 +84,7 @@ class Pulse(bodies.Body):
         bodies.Body.__init__(self,location,size,speed,angle)
         self.done = False
         self.start = location[:]
-        self.range = 400
+        self.range = 800
         self.damage = 1 * DAMAGE_FACTOR
         self.origin = origin
         self.hit_origin = False #Can your own shots hit you?

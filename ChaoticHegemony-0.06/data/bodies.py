@@ -195,6 +195,7 @@ class Body(_Collission):
 
     def wrap_map(self):
         """A pseudo double mobius strip."""
+        return
         #This presents issues with collissions when wrapping dictates that
         #an object appear somewhere already occupied by an object.
         if self.location[0] < 0:
@@ -391,6 +392,10 @@ class Player(Body):
         if (position == None) and (angle == None):
             return
         angle = fix_angle(angle, self.angle_offset)
+
+        position = list(position)
+        position[0] = (position[0] / 640.0) * 780
+        position[1] = (position[1] / 480.0) * 600
 
         #position, center, head = get_ship(BODY_SHIP_BLACK,DOT_RED_TAPE,DOT_GREEN_TAPE)
         try:

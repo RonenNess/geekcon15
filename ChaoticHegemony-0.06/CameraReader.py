@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import math
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 
 IS_WALL = True
 
