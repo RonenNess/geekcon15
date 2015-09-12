@@ -21,7 +21,7 @@ class BlueWing(bodies.Player):
 
         self.prime_speed = 1.0
 
-        self.max_life   = self.life   = 8
+        self.max_life   = self.life   = 12
         self.max_energy = self.energy = 10
         self.accel = 0.05
 
@@ -43,7 +43,7 @@ class Triple(bodies.Player):
 
         self.prime_speed = 1.0
 
-        self.max_life   = self.life   = 8
+        self.max_life   = self.life   = 12
         self.max_energy = self.energy = 10
         self.accel = 0.05
 

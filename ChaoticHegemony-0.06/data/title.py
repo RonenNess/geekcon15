@@ -18,7 +18,7 @@ class Title:
         self.timer = 0.0
         self.blink = False
         self.done = False
-        self.image = pg.Surface((1000,600)).convert_alpha()
+        self.image = pg.Surface(SCREENSIZE).convert_alpha()
 
         self.Shipu = None
         self.Shipb = None

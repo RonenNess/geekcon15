@@ -336,7 +336,7 @@ class Player(Body):
         """Check if primary can be used and if so update timers and energy accordingly."""
         if self.energy - self.prim_cost >= 0 and self.life > 0:
 
-            randomTime = randint(500,1000)
+            randomTime = randint(700,1000)
             if pg.time.get_ticks() - self.prime_time >= randomTime/self.prime_speed:
                 self.fire_prime(arg)
                 self.prime_time = pg.time.get_ticks()
@@ -417,19 +417,20 @@ class Player(Body):
     def dying(self):
         """Animates the player exploding on death.
         Explosion animation will be improved later; placeholder for now."""
-        if pg.time.get_ticks() - self.dead_timer > 1000/7.0 and self.dead_frame != 5:
-            if self.dead_frame < 4:
+        if pg.time.get_ticks() - self.dead_timer > 1000/4.0 and self.dead_frame != 8:
+            if self.dead_frame < 7:
                 a,b = self.initial.get_rect().center
-                sub = pg.transform.scale(GFX["boom"].subsurface((50*self.dead_frame,0,50,50)),(80,80))
+                size = 150
+                sub = pg.transform.scale(GFX["boom"].subsurface((50*self.dead_frame,0,50,50)),(size,size))
                 self.initial = self.initial.copy()
-                self.initial.blit(sub,(a-40,b-40))
+                self.initial.blit(sub,(a-size*0.5,b-size*0.5))
                 self.make_image()
                 self.dead_frame += 1
                 self.dead_timer = pg.time.get_ticks()
             else:
                 self.initial.fill((255,0,255))
                 self.image.fill((255,0,255))
-                self.dead_frame = 5
+                self.dead_frame = 8
 
 ################################################################################
 def shrink_tri(adj,op,size):

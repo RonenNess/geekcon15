@@ -213,7 +213,7 @@ while(1):
     # draw all contours bounding boxes
     for cnt in hierarchy:
         x,y,w,h = cv2.boundingRect(cnt)
-        if w > 10 and h > 10:
+        if (w > 50 or h > 50) and (w > 10 and h > 10):
             #cv2.rectangle(frame, (x, y), (x+w, y+h), (0,0,255), 2)
             rect = cv2.minAreaRect(cnt)
             box = cv2.boxPoints(rect)
