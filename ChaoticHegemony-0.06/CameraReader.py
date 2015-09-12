@@ -2,8 +2,9 @@ import cv2
 import numpy as np
 import math
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 
+MIRROR = 0
 IS_WALL = True
 
 BODY_SHIP_ORANGE = ([8, 100, 100],[30, 255, 255])
@@ -18,7 +19,7 @@ BRIGHT_BLUE = ([40, 0, 0],[255, 200, 100])
 BRIGHT_PINK = ([0, 0, 150],[140, 140, 255])
 PENCIL = ([0, 0, 40],[60, 220, 255])
 
-STICK_GREEN = [(68,20,0),(120,255,255)]
+STICK_GREEN = [(44,0,0),(110,235,255)]
 STICK_BLACK = [(125, 50, 20), (175,255,255)]
 STICK_BLUE = [(75, 0, 0), (110, 255, 255)]
 
@@ -44,7 +45,11 @@ def mirror_point(p):
         return (640-p[0], 480-p[1])
 
 def mirror_box(b):
-    return [mirror_point(x) for x in b]
+    if MIRROR:
+        return [mirror_point(x) for x in b]
+    else:
+        return b
+
 
 def average(l):
     return int(float(sum(l)) / len(l))
@@ -199,6 +204,8 @@ def get_box_angle(box):
 
 def calculate_average_point(point1, point2):
     return average([point1[0],point2[0]]),average([point1[1],point2[1]])
+
+last_best = None
 while(1):
 
     # Take each frame
@@ -208,7 +215,7 @@ while(1):
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
     #hierarchy = get_place(hsv, [80,50, 50],[100, 255, 255]) green
-    hierarchy = get_place(hsv, STICK_BLUE[0], STICK_BLUE[1])
+    hierarchy = get_place(hsv, STICK_GREEN[0], STICK_GREEN[1])
 
     # draw all contours bounding boxes
     for cnt in hierarchy:
@@ -225,7 +232,11 @@ while(1):
     rects = [cv2.boundingRect(x) for x in hierarchy]
     try:
         best = max(range(len(rects)), key=lambda x: rects[x][2]*rects[x][3])
+        last_best = best
     except ValueError as e:
+        if last_best is not None:
+            best = last_best
+            break
         print "ValueError: ", e
         continue
 

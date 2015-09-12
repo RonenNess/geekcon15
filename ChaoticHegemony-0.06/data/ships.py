@@ -30,7 +30,7 @@ class BlueWing(bodies.Player):
         self.regen = 700
         self.color = STICK_GREEN
         self.angle_offset = 0
-        self.screen_half = 0
+        self.screen_half = 1
 
     def fire_prime(self,objects):
         objects.append(Pulse(self,self.location[:],self.rect.size,(self.vel_x,self.vel_y),-self.angle))
@@ -52,7 +52,7 @@ class Triple(bodies.Player):
         self.regen = 700
         self.color = STICK_GREEN
         self.angle_offset = 180
-        self.screen_half = 1
+        self.screen_half = 0
 
     def fire_prime(self,objects):
         objects.append(Pulse(self,self.location[:],self.rect.size,(self.vel_x,self.vel_y),-self.angle))
@@ -84,7 +84,7 @@ class Pulse(bodies.Body):
         bodies.Body.__init__(self,location,size,speed,angle)
         self.done = False
         self.start = location[:]
-        self.range = 400
+        self.range = 500
         self.damage = 1 * DAMAGE_FACTOR
         self.origin = origin
         self.hit_origin = False #Can your own shots hit you?

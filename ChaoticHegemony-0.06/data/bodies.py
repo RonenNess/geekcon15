@@ -197,6 +197,7 @@ class Body(_Collission):
         """A pseudo double mobius strip."""
         #This presents issues with collissions when wrapping dictates that
         #an object appear somewhere already occupied by an object.
+        return
         if self.location[0] < 0:
             if self.location[1] < 0:
                 self.location = [PLAYSIZE[0],PLAYSIZE[1]]
